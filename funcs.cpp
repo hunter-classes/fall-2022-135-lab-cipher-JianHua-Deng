@@ -84,7 +84,7 @@ std::string solve(std::string encrypted_string){
     double minDistance = DBL_MAX;//give minDistance largest value possible
 
     //loop the rotation
-    for(int i = 0; i < 25; i++){
+    for(int i = 0; i < 26; i++){
         std::vector<double> encryptedstring_freq = string_frequency(encryptCaesar(encrypted_string, i));
         currentdistance = distance(alphabetical_frequency, encryptedstring_freq);
         if(currentdistance < minDistance){
