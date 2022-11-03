@@ -1,5 +1,9 @@
 #include <iostream>
+#include <string>
 #include <vector>
+#include <limits.h>
+#include <cfloat>
+#include <fstream>
 #include <cmath>
 #include "funcs.h"
 
@@ -36,23 +40,25 @@ double distance(std::vector<double> alphabeticalFrequency, std::vector<double> s
 }//end distance function
 
 
-std::vector<double> string_frequency(std::string encrypted_string){//checks the frequency of each letter in the string
+
+std::vector<double> string_frequency(std::string string){//checks the frequency of each letter in the string
 
     std::vector<double> encrypted_frequency(26, 0);
+    int count = 0;
 
-    for(int i = 0; i < encrypted_string.length(); i++){
+    for(int i = 0; i < string.length(); i++){
         for(int x = 0; x < encrypted_frequency.size(); x++){
 
-            if(isalpha(encrypted_string[i])){//if it's a letter
-
-                if(isupper(encrypted_string[i])){//if it's uppercase letter
-                    if(x == encrypted_string[i] - 'A'){
+            if(isalpha(string[i])){//if it's a letter
+                count++;
+                if(isupper(string[i])){//if it's uppercase letter
+                    if(x == string[i] - 'A'){
                         encrypted_frequency[x] += 1;
                     }//end condition
 
                 }else{//if its lowercase letter
 
-                    if(x == encrypted_string[i] - 'a'){
+                    if(x == string[i] - 'a'){
                         encrypted_frequency[x] += 1;
                     }//end condition
 
@@ -63,27 +69,30 @@ std::vector<double> string_frequency(std::string encrypted_string){//checks the 
     }//end for loop
 
     //Get the percentage of each char based on encrypted string's length
-    for(int j = 0; j < encrypted_string.length(); j++){
-        encrypted_frequency[j] = encrypted_frequency[j] / encrypted_string.length();
+    for(int j = 0; j < string.length(); j++){
+        encrypted_frequency[j] = encrypted_frequency[j] / count;
     }//end for loop
 
     return encrypted_frequency;
 }//end frequency function
 
 std::string solve(std::string encrypted_string){
-    int totalLetters = 0;
+    //Used frequencies A-Z from Marian Webster mentioned by Patrick on Zulip
+    std::vector<double> alphabetical_frequency{0.084966, 0.020720, 0.045388, 0.033844, 0.111607, 0.018121, 0.024705, 0.030034, 0.075448, 0.001964, 0.011016, 0.054893, 0.030129, 0.066544, 0.071635, 0.031671, 0.001962, 0.075809, .057351, 0.069509, 0.036308, 0.010074, 0.012899, 0.002902, 0.017779, 0.002722};
+    int answershift, currentdistance;
     double minDistance = DBL_MAX;//give minDistance largest value possible
-    
-    //Getting the total letters within encrypted_string
-    for(int i = 0; i < encrypted_string.length(); i++){
-        if(isalpha(encrypted_string[i])){
-            totalLetters++;
+
+    //loop the rotation
+    for(int i = 1; i < 26; i++){
+        std::vector<double> encryptedstring_freq = string_frequency(encryptCaesar(encrypted_string, i));
+        currentdistance = distance(alphabetical_frequency, encryptedstring_freq);
+        if(currentdistance < minDistance){
+            answershift = i;
+            minDistance = currentdistance;
         }//end condition
     }//end for loop
 
-    
 
-
-return "";
+    return encryptCaesar(encrypted_string, answershift);
 }//end solve function
 

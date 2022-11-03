@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "funcs.h"
 
 int main()
 {
-  std::vector<double> vector = string_frequency("ABCD");
-  for(int i = 0; i < vector.size(); i++){
-    std::cout << vector.at(i) << std::endl;
-  }
+
+  std::string str = encryptCaesar("I am the best", 5);
+  std::cout << solve(str) << "\n";
+  
   return 0;
 }
