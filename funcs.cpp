@@ -69,7 +69,7 @@ std::vector<double> string_frequency(std::string string){//checks the frequency 
     }//end for loop
 
     //Get the percentage of each char based on encrypted string's length
-    for(int j = 0; j < string.length(); j++){
+    for(int j = 0; j < encrypted_frequency.size(); j++){
         encrypted_frequency[j] = encrypted_frequency[j] / count;
     }//end for loop
 
@@ -79,20 +79,22 @@ std::vector<double> string_frequency(std::string string){//checks the frequency 
 std::string solve(std::string encrypted_string){
     //Used frequencies A-Z from Marian Webster mentioned by Patrick on Zulip
     std::vector<double> alphabetical_frequency{0.084966, 0.020720, 0.045388, 0.033844, 0.111607, 0.018121, 0.024705, 0.030034, 0.075448, 0.001964, 0.011016, 0.054893, 0.030129, 0.066544, 0.071635, 0.031671, 0.001962, 0.075809, .057351, 0.069509, 0.036308, 0.010074, 0.012899, 0.002902, 0.017779, 0.002722};
-    int answershift, currentdistance;
+    int answershift;
+    double currentdistance;
     double minDistance = DBL_MAX;//give minDistance largest value possible
 
     //loop the rotation
-    for(int i = 1; i < 26; i++){
+    for(int i = 0; i < 25; i++){
         std::vector<double> encryptedstring_freq = string_frequency(encryptCaesar(encrypted_string, i));
         currentdistance = distance(alphabetical_frequency, encryptedstring_freq);
         if(currentdistance < minDistance){
             answershift = i;
             minDistance = currentdistance;
         }//end condition
+
     }//end for loop
 
-
+    //std::cout << answershift<< std::endl;
     return encryptCaesar(encrypted_string, answershift);
 }//end solve function
 
